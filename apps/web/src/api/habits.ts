@@ -76,8 +76,8 @@ export function useDeleteHabit() {
   return useMutation({
     mutationFn: (id: string) => request(`/habits/${id}`, emptySchema, { method: 'DELETE' }),
     onSuccess: (_result, id) => {
-      queryClient.removeQueries({ queryKey: [...habitKeys.all, 'detail', id] });
-      queryClient.removeQueries({ queryKey: habitKeys.statsOf(id) });
+      queryClient.invalidateQueries({ queryKey: habitKeys.detailOf(id), refetchType: 'none' });
+      queryClient.invalidateQueries({ queryKey: habitKeys.statsOf(id), refetchType: 'none' });
       return queryClient.invalidateQueries({ queryKey: habitKeys.lists() });
     },
   });
