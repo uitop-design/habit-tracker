@@ -112,11 +112,9 @@ function buildHistory(habit: SeedHabit, today: string, index: number): string[] 
       continue;
     }
     recentScheduled += 1;
-    if (recentScheduled <= habit.recentRun) {
-      dates.push(date);
-    } else if (recentScheduled === habit.recentRun + 1) {
-      continue;
-    } else if (roll < habit.completion) {
+    const inRecentRun = recentScheduled <= habit.recentRun;
+    const breaksRecentRun = recentScheduled === habit.recentRun + 1;
+    if (inRecentRun || (!breaksRecentRun && roll < habit.completion)) {
       dates.push(date);
     }
   }
