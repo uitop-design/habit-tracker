@@ -3,7 +3,7 @@ import { isCalendarDate } from '../domain/dates.js';
 
 export const calendarDate = z
   .string()
-  .regex(/^\d{4}-\d{2}-\d{2}$/, 'Expected a date in YYYY-MM-DD format')
+  .regex(/^\d{4}-\d{2}-\d{2}$/, { message: 'Expected a date in YYYY-MM-DD format', abort: true })
   .refine(isCalendarDate, 'Expected a valid calendar date')
   .meta({ format: 'date', example: '2026-11-16' });
 
