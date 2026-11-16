@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router';
 import { AppLayout } from '@/components/app-layout';
+import { ArchivePage } from '@/pages/archive-page';
 import { HabitPage } from '@/pages/habit-page';
 import { NotFoundPage } from '@/pages/not-found-page';
 import { TodayPage } from '@/pages/today-page';
@@ -10,6 +11,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <TodayPage /> },
       { path: 'habits/:habitId', element: <HabitPage /> },
+      { path: 'archive', element: <ArchivePage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },
