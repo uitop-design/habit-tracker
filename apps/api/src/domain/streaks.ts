@@ -53,27 +53,29 @@ export function currentStreak({ dates, weekdays, today }: StreakInput): number {
   return streak;
 }
 
+function hasScheduledDayBetween(from: DayNumber, to: DayNumber, scheduled: Set<number>): boolean {
+  if (to - from > 7) return true;
+  for (let day = from + 1; day < to; day += 1) {
+    if (scheduled.has(isoWeekday(day))) return true;
+  }
+  return false;
+}
+
 export function bestStreak({ dates, weekdays, today }: StreakInput): number {
   const end = toDayNumber(today);
-  const done = new Set([...toDaySet(dates)].filter((day) => day <= end));
   const scheduled = new Set(weekdays);
-  if (done.size === 0 || scheduled.size === 0) return 0;
-
-  let last = Number.NEGATIVE_INFINITY;
-  for (const day of done) {
-    if (day > last) last = day;
-  }
+  const days = [...toDaySet(dates)]
+    .filter((day) => day <= end && scheduled.has(isoWeekday(day)))
+    .sort((a, b) => a - b);
 
   let best = 0;
   let run = 0;
-  for (let day = minOf(done); day <= last; day += 1) {
-    if (!scheduled.has(isoWeekday(day))) continue;
-    if (done.has(day)) {
-      run += 1;
-      if (run > best) best = run;
-    } else {
-      run = 0;
-    }
+  let previous: DayNumber | undefined;
+  for (const day of days) {
+    const continues = previous !== undefined && !hasScheduledDayBetween(previous, day, scheduled);
+    run = continues ? run + 1 : 1;
+    if (run > best) best = run;
+    previous = day;
   }
   return best;
 }
