@@ -11,6 +11,8 @@ import { habitsRoutes } from './modules/habits/routes.js';
 import { createHabitsService } from './modules/habits/service.js';
 import { healthRoutes } from './modules/health/routes.js';
 import { createHealthService } from './modules/health/service.js';
+import { statsRoutes } from './modules/stats/routes.js';
+import { createStatsService } from './modules/stats/service.js';
 import dbPlugin from './plugins/db.js';
 import errorHandler from './plugins/error-handler.js';
 import swagger from './plugins/swagger.js';
@@ -47,6 +49,10 @@ export async function buildApp({ db, closeDb, logger }: BuildAppOptions): Promis
       await api.register(checkinsRoutes, {
         prefix: '/habits',
         service: createCheckinsService(api.db),
+      });
+      await api.register(statsRoutes, {
+        prefix: '/habits',
+        service: createStatsService(api.db),
       });
       await api.register(healthRoutes, {
         prefix: '/health',

@@ -2,7 +2,11 @@ import { and, eq } from 'drizzle-orm';
 import type { Database } from '../../db/client.js';
 import { checkins } from '../../db/schema.js';
 import { addDays } from '../../domain/dates.js';
-import { CHECKIN_FUTURE_DAYS, CHECKIN_PAST_DAYS, isCheckinDateAllowed } from '../../domain/habit.js';
+import {
+  CHECKIN_FUTURE_DAYS,
+  CHECKIN_PAST_DAYS,
+  isCheckinDateAllowed,
+} from '../../domain/habit.js';
 import { BadRequestError, ConflictError, NotFoundError } from '../../lib/errors.js';
 import { PG_FOREIGN_KEY_VIOLATION, pgErrorCode } from '../../lib/pg-errors.js';
 import { findHabitOrThrow } from '../habits/queries.js';
